@@ -14,6 +14,7 @@ description="Parser for Sea-Bird's CTD and TSG"
 readme = "README.rst"
 requires-python = ">=3.6"
 keywords = ["oceanography", "ocean data", "CTD", "TSG", "SeaBird", "hydrography", "parser"]
+license = {file = "LICENSE.rst"}
 classifiers=[
   "Development Status :: 5 - Production/Stable",
   "Natural Language :: English",
@@ -51,6 +52,8 @@ QC = ["cotede>=0.20.2"]
 
 [project.urls]
 repository = "https://github.com/castelao/seabird"
+documentation = "https://seabird.readthedocs.io"
+
 [project.scripts]
 "seabird" = "seabird.cli:cli"
 
@@ -60,3 +63,9 @@ line-length = 88
 [tool.setuptools_scm]
 write_to = "seabird/version.py"
 git_describe_command = "git describe --dirty --tags --long --match 'v*' --first-parent"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+  "tests",
+]
