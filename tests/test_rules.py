@@ -3,11 +3,10 @@
 """ Check the rules
 """
 
-import os
-import pkg_resources
+import importlib.resources
 import json
 import re
-import seabird
+from seabird import rules
 
 
 def test_load_available_rules():
@@ -15,14 +14,13 @@ def test_load_available_rules():
 
     https://github.com/castelao/seabird/issues/7
     """
-    rules_dir = "rules"
-    rule_files = pkg_resources.resource_listdir(seabird.__name__, rules_dir)
+    rules_dir_path = importlib.resources.files(rules)
+    rule_files = [entry.name for entry in rules_dir_path.iterdir() if entry.is_file()]
     rule_files = [f for f in rule_files if re.match("^(?!refnames).*json$", f)]
     for rule_file in rule_files:
         print("loading rule: %s", (rule_file))
-        text = pkg_resources.resource_string(
-            seabird.__name__, os.path.join(rules_dir, rule_file)
-        )
-        rule = json.loads(text.decode("utf-8"))
+        with importlib.resources.files(rules).joinpath(rule_file).open('r') as file:
+            text = file.read()
+        rule = json.loads(text)
         assert type(rule) == dict
         assert len(rule.keys()) > 0

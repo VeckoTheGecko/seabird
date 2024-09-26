@@ -3,15 +3,13 @@ __email__ = "guilherme@castelao.net"
 
 from .cnv import CNV, fCNV
 from .exceptions import CNVError
+import importlib.metadata
 
 # __all__ = ['CNV', 'fCNV']
 
-
-from pkg_resources import get_distribution, DistributionNotFound
-
 try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
+    __version__ = importlib.metadata.version(__name__)
+except Exception:
     try:
         from .version import version as __version__
     except ImportError:

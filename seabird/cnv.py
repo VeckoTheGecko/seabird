@@ -1,20 +1,13 @@
 from datetime import datetime, timedelta
 import re
-import pkg_resources
+import importlib.resources
 import os
 import logging
 import struct
 import json
+from . import rules
+import hashlib
 
-try:
-    import hashlib
-
-    md5 = hashlib.md5
-except ImportError:
-    # for Python << 2.5
-    import md5
-
-    md5 = md5.new
 
 # import codecs
 import numpy as np
@@ -150,9 +143,9 @@ class CNV:
         # ----
         # Temporary solution. Failsafe MD5
         try:
-            self.attrs["md5"] = md5(self.raw_text.encode("utf-8")).hexdigest()
+            self.attrs["md5"] = hashlib.md5(self.raw_text.encode("utf-8")).hexdigest()
         except:
-            self.attrs["md5"] = md5(
+            self.attrs["md5"] = hashlib.md5(
                 self.raw_text.decode("latin1", "replace").encode("utf-8")
             ).hexdigest()
 
@@ -162,9 +155,10 @@ class CNV:
         self.data = []
         self.ids = []
         # ----
-        rule_file = "rules/refnames.json"
-        text = pkg_resources.resource_string(__name__, rule_file)
-        refnames = json.loads(text.decode("utf-8"))
+
+        with importlib.resources.open_text(rules, "refnames.json") as file:
+            text = file.read()
+        refnames = json.loads(text)
         # ---- Parse fields
 
         if ("attributes" in self.rule) and (
