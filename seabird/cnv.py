@@ -46,7 +46,7 @@ class CNV:
         module_logger.debug("Initializing CNV class")
 
         # Clean empty lines first
-        self.raw_text = re.sub("\n\s*(?=\n)", "", raw_text)
+        self.raw_text = re.sub(r"\n\s*(?=\n)", "", raw_text)
         self.defaults = defaults
         self.attrs = {}
         # ----
