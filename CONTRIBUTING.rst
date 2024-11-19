@@ -66,13 +66,7 @@ Ready to contribute? Here's how to set up `seabird` for local development.
 
    a. Using Conda (assuming you already have it installed)
 
-        I. Python 2::
-
-            $ conda create --name seabird python=2
-
-        II. Or, Python 3::
-
-            $ conda create --name seabird python=3
+            $ conda create --name seabird python=3.10
 
         Activate your conda environment, and take advantage of conda::
 
